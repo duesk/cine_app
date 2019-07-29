@@ -22,7 +22,11 @@ class PeliculaDetalle extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(height: 10.0,),
-                _posterTitulo(pelicula)
+                _posterTitulo(pelicula,context),
+                _descripcion(pelicula),
+                _descripcion(pelicula),
+                _descripcion(pelicula),
+                _descripcion(pelicula),
               ]
             ) ,
           ),
@@ -32,7 +36,7 @@ class PeliculaDetalle extends StatelessWidget {
     );
   }
 
-  Widget  _posterTitulo(Pelicula pelicula){
+  Widget  _posterTitulo(Pelicula pelicula, BuildContext context){
 
     return Container(
       padding:EdgeInsets.symmetric(horizontal: 10.0) ,
@@ -45,10 +49,30 @@ class PeliculaDetalle extends StatelessWidget {
               height: 150,
             ),
           ),
+          SizedBox(width: 20),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(pelicula.title, 
+                  style: Theme.of(context).textTheme.title
+                ),
+                Text(pelicula.originalTitle, 
+                  style: Theme.of(context).textTheme.subhead,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.star_border),
+                    Text(pelicula.voteAverage.toString(),
+                    style: Theme.of(context).textTheme.subhead  )
+                  ],
+                )
+              ],
+            ),
+          )
       ],),
     );
-
-
   }
 
 
@@ -87,10 +111,20 @@ class PeliculaDetalle extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 
+
+
+  Widget _descripcion(Pelicula pelicula){
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Text(pelicula.overview,
+        textAlign: TextAlign.justify,
+      ),
+    );
+
+  }
 
 
 }
