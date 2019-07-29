@@ -61,7 +61,6 @@ class PeliculaDetalle extends StatelessWidget {
     String tituloPelicula = pelicula.title;
 
 
-
     return SliverAppBar(
       forceElevated: false,
       elevation: 2.0,
