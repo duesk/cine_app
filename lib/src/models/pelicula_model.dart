@@ -78,4 +78,14 @@ class Pelicula {
 
   }
 
+  getBackgroundImg(){
+
+    if (posterPath == null){
+      return"https://wingslax.com/wp-content/uploads/2017/12/no-image-available.png";
+    } else{
+      return "https://image.tmdb.org/t/p/w500/$backdropPath";
+    }
+
+  }
+
 }

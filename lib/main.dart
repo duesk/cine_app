@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
- 
+
+
+import 'package:cine_app/src/pages/pelicula_detalle.dart';
 import 'package:cine_app/src/pages/homePage.dart';
 
 
 void main() => runApp(MyApp());
- 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/" :(BuildContext context) => HomePage(),
+        "detalle" :(BuildContext context) => PeliculaDetalle(),
       },
     );
   }

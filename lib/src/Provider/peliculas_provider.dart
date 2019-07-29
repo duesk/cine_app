@@ -14,6 +14,9 @@ class PeliculasProvider{
   String _lenguaje= "es-ES";
 
   int _popularesPage = 0;  //contador de paginas
+  bool cargando = false;
+
+
 
   List<Pelicula> _populares= new List();   //lista de peliculas vacia
 
@@ -49,6 +52,10 @@ class PeliculasProvider{
 
 
   Future<List<Pelicula>> getPopulares() async{
+    if (cargando)return [];
+
+    cargando = true;
+
     _popularesPage++;
     final url =Uri.https(_url, "3/movie/popular",{
       "api_key": _apiKey,
@@ -61,6 +68,10 @@ class PeliculasProvider{
 
     _populares.addAll(resp);
     popularesSink(_populares);
+    cargando = false;
+    return resp;
+
+    
 
 
   }
