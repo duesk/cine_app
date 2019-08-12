@@ -1,7 +1,9 @@
+import 'package:cine_app/src/models/actores_model.dart';
 import 'package:cine_app/src/models/pelicula_model.dart' as prefix0;
 import 'package:flutter/material.dart';
 
 
+import 'package:cine_app/src/Provider/peliculas_provider.dart';
 import 'package:cine_app/src/models/pelicula_model.dart';
 
 
@@ -22,11 +24,10 @@ class PeliculaDetalle extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(height: 10.0,),
-                _posterTitulo(pelicula,context),
-                _descripcion(pelicula),
-                _descripcion(pelicula),
-                _descripcion(pelicula),
-                _descripcion(pelicula),
+                    _posterTitulo(pelicula,context),
+                    _descripcion(pelicula),
+                    _crearCasting(pelicula),
+                  
               ]
             ) ,
           ),
@@ -42,11 +43,14 @@ class PeliculaDetalle extends StatelessWidget {
       padding:EdgeInsets.symmetric(horizontal: 10.0) ,
       child:  Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image(
-              image: NetworkImage(pelicula.getPosterImg()),
-              height: 150,
+          Hero(
+            tag: pelicula.uniqueID,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image(
+                image: NetworkImage(pelicula.getPosterImg()),
+                height: 150,
+              ),
             ),
           ),
           SizedBox(width: 20),
@@ -74,11 +78,6 @@ class PeliculaDetalle extends StatelessWidget {
       ],),
     );
   }
-
-
-
-
-
 
   Widget _crearAppbar(Pelicula pelicula){
 
@@ -113,8 +112,6 @@ class PeliculaDetalle extends StatelessWidget {
     );
   }
 
-
-
   Widget _descripcion(Pelicula pelicula){
 
     return Container(
@@ -122,6 +119,67 @@ class PeliculaDetalle extends StatelessWidget {
       child: Text(pelicula.overview,
         textAlign: TextAlign.justify,
       ),
+    );
+
+  }
+
+  Widget _crearCasting(Pelicula pelicula){
+
+    final peliProvider = new PeliculasProvider();
+
+    return FutureBuilder(
+      future: peliProvider.getCast(pelicula.id.toString()),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.hasData){
+          return _crearActoresPageView(snapshot.data);
+        }else {
+          return Center(
+            child: CircularProgressIndicator()
+            );
+        }
+      },
+    );
+  }
+
+  Widget _crearActoresPageView(List<Actor>actores ){
+    
+    return SizedBox(
+      height: 300.0,
+      child: PageView.builder(
+        pageSnapping: false,
+        controller: PageController(
+          viewportFraction: 0.3,
+          initialPage: 1, 
+        ),
+        itemCount: actores.length,
+        itemBuilder: (context,i){
+          return _actorTarjeta(actores[i]);
+        },
+      )
+    );
+  }
+
+  Widget _actorTarjeta(Actor actor){
+    String personaje = actor.character;
+    return Container(
+      padding: EdgeInsets.all(6),
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: 35,
+            child: Text(actor.name)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: FadeInImage(
+              image: NetworkImage(actor.getFoto()),
+              placeholder: AssetImage("assets/img/no_image.jpg"),
+              height: 150.0,
+              fit: BoxFit.cover,
+              ),
+          ),
+          Text("( $personaje )")
+        ],
+      )
     );
 
   }

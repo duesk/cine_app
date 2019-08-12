@@ -1,9 +1,11 @@
 import 'package:cine_app/src/Provider/peliculas_provider.dart';
-
-
-import 'package:cine_app/src/widgets/card_swiper_widget.dart';
+import 'package:cine_app/src/search/search_delegate.dart';
 import 'package:cine_app/src/widgets/movie_horizontal.dart';
+import 'package:cine_app/src/widgets/card_swiper_widget.dart';
+
+
 import 'package:flutter/material.dart';
+
 
 class HomePage extends StatelessWidget {
 
@@ -22,7 +24,13 @@ class HomePage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: (){},
+            onPressed: (){
+              showSearch(
+                context: context, 
+                delegate: DataSearch(),
+                //query: "texto autocompletado"
+              );
+            },
           )
           
         ],
